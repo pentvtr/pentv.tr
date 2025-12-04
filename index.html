@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M3U İzle</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 90%;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+      }
+      input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #5568d3;
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>M3U İzleyici</h1>
+      <input
+        type="url"
+        id="m3uUrl"
+        placeholder="https://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8"
+        value="https://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8"
+        required
+      />
+      <button onclick="viewM3U()">İzle</button>
+    </div>
+
+    <script>
+      function viewM3U() {
+        const url = document.getElementById("m3uUrl").value.trim();
+        if (url) {
+          window.location.href = `/v.html?u=${encodeURIComponent(url)}`;
+        } else {
+          alert("Lütfen bir M3U URL girin!");
+        }
+      }
+
+      document.getElementById("m3uUrl").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          viewM3U();
+        }
+      });
+    </script>
+  </body>
+</html>

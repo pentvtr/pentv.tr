@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Set</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .clear-btn {
+        background-color: #f44336;
+      }
+      .clear-btn:hover {
+        background-color: #da190b;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="storageForm">
+      <div class="form-group">
+        <label for="b">Stream Base Url:</label>
+        <input type="text" id="b" name="b" required />
+      </div>
+
+      <div class="form-group">
+        <label for="u">Username:</label>
+        <input type="text" id="u" name="u" required />
+      </div>
+
+      <div class="form-group">
+        <label for="p">Password:</label>
+        <input type="text" id="p" name="p" required />
+      </div>
+
+      <button type="submit">Set</button>
+    </form>
+
+    <div id="status" class="status"></div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const bParam = urlParams.get("b");
+      const uParam = urlParams.get("u");
+      const pParam = urlParams.get("p");
+
+      document.getElementById("storageForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const b = document.getElementById("b").value;
+        const u = document.getElementById("u").value;
+        const p = document.getElementById("p").value;
+
+        localStorage.setItem("b", b);
+        localStorage.setItem("u", u);
+        localStorage.setItem("p", p);
+
+        // redirect to v1.html
+        const cParam = urlParams.get("c");
+        window.location.href = "/v1.html" + (cParam ? "?c=" + cParam : "");
+      });
+
+      // Load saved values on page load
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("b").value =
+          bParam || localStorage.getItem("b") || "";
+        document.getElementById("u").value =
+          uParam || localStorage.getItem("u") || "";
+        document.getElementById("p").value =
+          pParam || localStorage.getItem("p") || "";
+
+        if (uParam && pParam) {
+          document
+            .getElementById("storageForm")
+            .dispatchEvent(new Event("submit"));
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IPTV Player</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      #video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="video" controls></video>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+    <script>
+      const B = localStorage.getItem("b");
+      const U = localStorage.getItem("u");
+      const P = localStorage.getItem("p");
+      if (!B || !U || !P) {
+        window.location.href = "/s.html";
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const C = urlParams.get("c") || localStorage.getItem("c") || "1";
+        localStorage.setItem("c", C);
+
+        if (window.location.search) {
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+        }
+
+        const streamUrl = B + "/" + U + "/" + P + "/" + C + ".m3u8";
+        console.log("Stream URL:", streamUrl);
+
+        const video = document.getElementById("video");
+
+        if (Hls.isSupported()) {
+          const hls = new Hls({
+            debug: true,
+            enableWorker: true,
+            backBufferLength: 90,
+          });
+
+          hls.loadSource(streamUrl);
+          hls.attachMedia(video);
+
+          hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            console.log("✓ Stream yüklendi");
+          });
+
+          hls.on(Hls.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+              console.error("Hata:", data.type, data.details);
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  hls.destroy();
+                  break;
+              }
+            }
+          });
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          video.src = streamUrl;
+
+          video.addEventListener("error", function () {
+            console.error("Video hatası:", video.error?.code);
+          });
+        } else {
+          alert("Tarayıcınız bu formatı desteklemiyor");
+        }
+      }
+    </script>
+  </body>
+</html>
