@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>M3U İzle</title>
+    <title>Pen TV M3U Player</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -61,7 +61,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>M3U İzleyici</h1>
+      <h1>M3U Player</h1>
       <input
         type="url"
         id="m3uUrl"
@@ -69,7 +69,7 @@
         value="https://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8"
         required
       />
-      <button onclick="viewM3U()">İzle</button>
+      <button onclick="viewM3U()">Play</button>
     </div>
 
     <script>
@@ -81,12 +81,6 @@
           alert("Lütfen bir M3U URL girin!");
         }
       }
-
-      document.getElementById("m3uUrl").addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          viewM3U();
-        }
-      });
     </script>
   </body>
 </html>
