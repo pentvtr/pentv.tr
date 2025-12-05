@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>Pen TV M3U Player</title>
     <style>
       body {
@@ -76,7 +77,10 @@
       function viewM3U() {
         const url = document.getElementById("m3uUrl").value.trim();
         if (url) {
-          window.location.href = `/v.html?u=${encodeURIComponent(url)}`;
+          const qObj = { l: url };
+          const qs = new URLSearchParams(qObj).toString();
+          const q = btoa(unescape(encodeURIComponent(qs)));
+          window.location.href = `/v?q=${q}`;
         } else {
           alert("Lütfen bir M3U URL girin!");
         }
